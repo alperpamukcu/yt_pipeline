@@ -1,3 +1,0 @@
-# Her satira bir konu yazin. # ile baslayan satirlar atlanir.
-# Ornek:
-Dünyanın en derin çukuru
