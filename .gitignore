@@ -1,0 +1,19 @@
+# uretim ciktilari ve durum
+output/
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# gizli bilgiler / kimlik dosyalari
+client_secret.json
+token.json
+.env
+
+# yerel medya varliklari
+assets/
+
+# log
+*.log

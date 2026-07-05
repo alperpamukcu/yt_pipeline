@@ -1,0 +1,92 @@
+# ============ GENEL ============
+language: "tr"
+topics_file: "topics.txt"
+format: "vertical"                 # vertical (9:16) | horizontal
+
+# ============ SENARYO (Claude API) ============
+script:
+  provider: "anthropic"
+  model: "claude-sonnet-4-6"
+  max_tokens: 8000
+  target_seconds: 30                 # video basina sure - kisa videolar daha iyi tutuyor
+  videos_per_topic: 3                # her konudan kac bagimsiz kisa video uretilecek
+  style: >
+    Ilk 2 saniyede sok edici/merak uyandiran bir hook. Hizli tempo, kisa
+    cumleler, tek bir net fikir. Sonunda takip etmeye tesvik eden kapanis.
+    Ozgun bir bakis acisi kat - jenerik metin kabul edilemez.
+
+# ============ SESLENDIRME ============
+tts:
+  provider: "elevenlabs"           # elevenlabs (gercek insan sesine en yakin) | edge (ucretsiz yedek)
+  elevenlabs:
+    # ELEVENLABS_API_KEY ortam degiskeninden okunur
+    # HEDEF SES: "Emin - Storyteller" (2olWvHmrPO1obgZX9ivZ) - anadili Turkce,
+    # profesyonel anlatici. Hesaba ekli AMA Voice Library sesleri API'de sadece
+    # UCRETLI planlarda calisiyor (free plan 402 paid_plan_required doner).
+    # Ucretli plana gecince alttaki satiri aktif edin, George satirini silin:
+    # voice_id: "2olWvHmrPO1obgZX9ivZ"
+    voice_id: "JBFqnCBsd6RMkjVDRZzb"   # George (premade, free planda calisir - Turkce'de hafif aksanli)
+    model_id: "eleven_multilingual_v2" # kelime zamanlamasi (senkron altyazi) icin gerekli; eleven_v3 timestamps desteklemiyor
+    stability: 0.35                    # dusuk = daha duygusal/insansi (0.5 fazla duz kaliyordu)
+    similarity_boost: 0.75
+    style: 0.45                        # daha yuksek = daha ifadeli anlatim
+    use_speaker_boost: true
+  voice_tr: "tr-TR-AhmetNeural"    # edge yedegi icin
+  voice_en: "en-US-GuyNeural"
+  rate: "+10%"
+
+# ============ GORSEL ============
+visuals:
+  provider: "replicate"            # replicate (AI video/gorsel) | pexels (stok) | local
+  replicate:
+    # REPLICATE_API_TOKEN ortam degiskeninden okunur
+    # Seedance 1 Pro: prompt sadakati yuksek -> sahneler konudan kopmuyor.
+    # Alternatifler: kwaivgi/kling-v3-omni-video, resim icin black-forest-labs/flux-schnell
+    model: "bytedance/seedance-1-pro"
+    type: "video"                  # video | image (modele gore)
+    mode: "standard"               # kling icin: standard (720p) | pro (1080p)
+    resolution: "1080p"            # seedance icin: 480p | 1080p
+    per_video: 3                   # video basina uretilecek klip sayisi (3 x 10 sn = 30 sn video)
+    clip_seconds: 10               # klip basina sure (seedance: 5 veya 10 sn)
+    generate_audio: false          # seslendirme ayrica eklendigi icin kapali
+    # NOT: stil kisa ve notr tutuldu - agir stil (or. Wes Anderson) sahne icerigini
+    # eziyor ve videoyu konudan uzaklastiriyordu. Stil visuals.py'de prompt SONUNA eklenir.
+    style_suffix: >
+      cinematic documentary style, photorealistic, natural dramatic lighting,
+      high detail, shallow depth of field
+    negative_prompt: "text, watermark, subtitles, logo, blurry, low quality, distorted faces"
+
+stock:                             # visuals.provider: pexels secilirse
+  provider: "pexels"
+  per_topic: 5
+  orientation: "portrait"
+
+# ============ VIDEO ============
+video:
+  resolution_vertical: "1080x1920"
+  resolution_horizontal: "1920x1080"
+  fps: 30
+  assets_dir: "assets"
+  subtitle: true
+  captions:                        # kelime-kelime senkron altyazi stili
+    size: 96
+    outline: 5
+    position: 0.30                 # alttan oran (0.30 = ekranin alt %30'u)
+    font: "Arial"                  # sistemde kurulu bir font adi (Windows: Arial, Segoe UI...)
+  bg_music: ""
+  bg_music_volume: 0.08
+
+# ============ KAPAK ============
+thumbnail:
+  bg_color: "#101827"
+  text_color: "#FFD43B"
+  font: ""
+
+# ============ YOUTUBE ============
+youtube:
+  client_secrets: "client_secret.json"
+  token_file: "token.json"
+  privacy: "private"
+  category_id: "27"
+  made_for_kids: false
+  ai_disclosure: true

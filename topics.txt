@@ -1,0 +1,3 @@
+# Her satira bir konu yazin. # ile baslayan satirlar atlanir.
+# Ornek:
+2016 Bangladeş Merkez Bankası soygunu: Lazarus Group 1 milyar dolar çalmaya çalıştı, tek bir yazım hatası ("foundation" yerine "fandation") 850 milyon doları kurtardı ama 81 milyon dolar Filipin kumarhanelerinde kayboldu
